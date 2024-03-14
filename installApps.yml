@@ -1,6 +1,6 @@
 ---
 
-- name: Update package cache
+- name: Update package cache and install mysql-server
   hosts: all
   gather_facts: no
   become: true
@@ -10,3 +10,8 @@
     - name: Update package cache
       ansible.builtin.apt:
         update_cache: yes
+
+    - name: Install mysql-server
+      ansible.builtin.apt:
+        name: mysql-server
+        state: present
