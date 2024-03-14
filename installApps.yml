@@ -4,7 +4,6 @@
   gather_facts: no
   become: true
   become_method: sudo
-  become_pass: 123
 
   tasks:
     - name: Update package cache
@@ -15,3 +14,6 @@
       ansible.builtin.apt:
         name: mysql-server
         state: present
+      vars:
+        ansible_become_pass: "123"
+
