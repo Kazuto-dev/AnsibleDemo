@@ -1,0 +1,24 @@
+---
+
+- name: Uninstall mysql-server and update package cache
+  hosts: all
+  gather_facts: no
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Stop mysql-server service
+      ansible.builtin.service:
+        name: mysql
+        state: stopped
+      ignore_errors: yes  # Ignore errors if the service is not installed or running
+
+    - name: Uninstall mysql-server
+      ansible.builtin.apt:
+        name: mysql-server
+        state: absent
+
+    - name: Update package cache
+      ansible.builtin.apt:
+        update_cache: yes
+

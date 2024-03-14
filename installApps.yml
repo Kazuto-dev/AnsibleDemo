@@ -1,10 +1,10 @@
 ---
 
-- name: Update package cache and install mysql-server
-  hosts: all
+- hosts: all
   gather_facts: no
   become: true
-  become_user: root
+  become_method: sudo
+  become_pass: 123
 
   tasks:
     - name: Update package cache
