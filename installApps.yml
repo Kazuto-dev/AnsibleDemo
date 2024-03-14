@@ -1,52 +1,12 @@
 ---
 
-- name: Install Node.js, PHP, NGINX, MariaDB, Composer, and Git
+- name: Update package cache
   hosts: all
   gather_facts: no
   become: true
+  become_user: root
 
   tasks:
     - name: Update package cache
-      package:
-        name: "*"
-        state: latest
-
-    - name: Install Node.js 18.x
-      ansible.builtin.yum:
-        name: "nodejs"
-        enablerepo: nodesource
-        state: present
-
-    - name: Install PHP 8.2-fpm
-      ansible.builtin.yum:
-        name: "php-fpm"
-        state: present
-
-    - name: Install NGINX 1.20.x
-      ansible.builtin.yum:
-        name: "nginx"
-        state: present
-
-    - name: Install MariaDB 10.11
-      ansible.builtin.yum:
-        name: "mariadb-server"
-        state: present
-
-    - name: Install Composer
-      ansible.builtin.shell:
-        cmd: >
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php -r "if (hash_file('sha384', 'composer-setup.php') === '{{ composer_sha }}') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-          php composer-setup.php
-          php -r "unlink('composer-setup.php');"
-          mv composer.phar /usr/local/bin/composer
-        creates: /usr/local/bin/composer
-      args:
-        executable: /bin/bash
-      vars:
-        composer_sha: "dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6"
-
-    - name: Install Git
-      ansible.builtin.yum:
-        name: "git"
-        state: present
+      ansible.builtin.apt:
+        update_cache: yes
